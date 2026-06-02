@@ -44,7 +44,7 @@ class User extends Authenticatable implements IShopModel
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            // 'password' => 'hashed', // Disabled: Shopify access token stored in password column, must not be hashed
         ];
     }
 }

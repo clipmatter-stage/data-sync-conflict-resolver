@@ -7,6 +7,10 @@ import { createRoot } from 'react-dom/client';
 import { initializeTheme } from './hooks/use-appearance';
 import { AppProvider } from '@shopify/polaris';
 import enTranslations from '@shopify/polaris/locales/en.json';
+import axios from 'axios';
+
+// Make axios available globally for Inertia
+window.axios = axios;
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

@@ -28,6 +28,19 @@ class HandleInertiaRequests extends Middleware
     }
 
     /**
+     * Sets the root template that's loaded on the first page visit.
+     */
+    public function rootView(Request $request): string
+    {
+        // Use guest layout for install page (no Shopify authentication required)
+        if ($request->routeIs('install')) {
+            return 'guest';
+        }
+
+        return $this->rootView;
+    }
+
+    /**
      * Define the props that are shared by default.
      *
      * @see https://inertiajs.com/shared-data
@@ -42,9 +55,15 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
+            'flash' => [
+                'success' => fn() => $request->session()->get('success'),
+                'error' => fn() => $request->session()->get('error'),
+                'message' => fn() => $request->session()->get('message'),
+            ],
             'auth' => [
                 'user' => $request->user(),
             ],
+            'shop' => $request->input('shop') ?: $request->user()?->name,
         ]);
     }
 }

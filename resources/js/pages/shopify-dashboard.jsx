@@ -1,11 +1,18 @@
 import { Page, Card, Text, Button, BlockStack, InlineStack } from '@shopify/polaris';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
+import { TitleBar } from '@shopify/app-bridge-react';
+import { withShopParam } from '@/utils/navigation';
 
 export default function ShopifyDashboard({ shop }) {
+    const handleProductSync = () => {
+        router.visit(withShopParam('/product-sync/dashboard'));
+    };
+
     return (
         <>
             <Head title="Shopify Dashboard" />
-            <Page title="Welcome to Your Shopify App">
+            <TitleBar title="Welcome to Your Shopify App" />
+            <Page>
                 <BlockStack gap="500">
                     <Card>
                         <BlockStack gap="300">
@@ -57,7 +64,37 @@ export default function ShopifyDashboard({ shop }) {
                     <Card>
                         <BlockStack gap="300">
                             <Text as="h2" variant="headingMd">
-                                🚀 Next Steps
+                                � Product Sync Conflict Resolver
+                            </Text>
+                            <Text as="p" variant="bodyMd">
+                                Sync products from Akeneo PIM to Shopify, detect conflicts, and resolve differences with an intelligent conflict resolution system.
+                            </Text>
+                            <BlockStack gap="200">
+                                <Text as="p" variant="bodyMd">
+                                    • Automated product synchronization
+                                </Text>
+                                <Text as="p" variant="bodyMd">
+                                    • Field-level conflict detection (title, price, SKU, etc.)
+                                </Text>
+                                <Text as="p" variant="bodyMd">
+                                    • Multiple resolution strategies
+                                </Text>
+                                <Text as="p" variant="bodyMd">
+                                    • Comprehensive sync logging and history
+                                </Text>
+                            </BlockStack>
+                            <InlineStack gap="300">
+                                <Button variant="primary" onClick={handleProductSync}>
+                                    Open Product Sync Dashboard
+                                </Button>
+                            </InlineStack>
+                        </BlockStack>
+                    </Card>
+
+                    <Card>
+                        <BlockStack gap="300">
+                            <Text as="h2" variant="headingMd">
+                                �🚀 Next Steps
                             </Text>
                             <BlockStack gap="200">
                                 <Text as="p" variant="bodyMd">
