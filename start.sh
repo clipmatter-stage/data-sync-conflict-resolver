@@ -43,5 +43,5 @@ echo "==> Creating storage directories..."
 mkdir -p storage/framework/{sessions,views,cache,testing} storage/logs bootstrap/cache
 chmod -R a+rw storage bootstrap/cache
 
-echo "==> Starting Laravel server on port ${PORT}..."
-php artisan serve --host=0.0.0.0 --port=${PORT}
+echo "==> Starting Laravel server on port ${PORT} with ${PHP_CLI_SERVER_WORKERS:-4} workers..."
+php artisan serve --host=0.0.0.0 --port=${PORT} --no-reload
