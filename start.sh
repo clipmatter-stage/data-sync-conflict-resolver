@@ -14,11 +14,25 @@ echo "MYSQL_URL=$(echo ${MYSQL_URL} | sed 's/:[^@]*@/:***@/')"
 echo "MYSQL_PUBLIC_URL=$(echo ${MYSQL_PUBLIC_URL} | sed 's/:[^@]*@/:***@/')"
 echo ""
 
-echo "==> Clearing stale config cache..."
+# Map Railway's MySQL URL to DB_URL if individual DB vars are not set
+if [ -z "$DB_HOST" ] && [ -n "$MYSQL_URL" ]; then
+    echo "==> DB_HOST not set but MYSQL_URL found, exporting as DB_URL..."
+    export DB_URL="$MYSQL_URL"
+elif [ -z "$DB_HOST" ] && [ -n "$DATABASE_URL" ]; then
+    echo "==> DB_HOST not set but DATABASE_URL found, exporting as DB_URL..."
+    export DB_URL="$DATABASE_URL"
+fi
+
+echo "==> Clearing stale build-time config cache..."
 php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+
+echo "==> Verifying database connection..."
+php artisan db:monitor || echo "WARNING: Database connection check failed, continuing anyway..."
 
 echo "==> Running migrations..."
-php artisan migrate --force
+php artisan migrate --force || echo "WARNING: Migrations failed, continuing anyway..."
 
 echo "==> Caching config with runtime env vars..."
 php artisan config:cache

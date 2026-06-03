@@ -1,0 +1,13 @@
+{
+    "$schema": "https://schema.railpack.io/railpack-plan.json",
+    "caches": {
+        "composer": "/app/vendor",
+        "npm": "/app/node_modules"
+    },
+    "commands": {
+        "build": [
+            "npm run build",
+            "mkdir -p storage/framework/{sessions,views,cache,testing} storage/logs bootstrap/cache && chmod -R a+rw storage"
+        ]
+    }
+}
