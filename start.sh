@@ -43,5 +43,16 @@ echo "==> Creating storage directories..."
 mkdir -p storage/framework/{sessions,views,cache,testing} storage/logs bootstrap/cache
 chmod -R a+rw storage bootstrap/cache
 
-echo "==> Starting Laravel server on port ${PORT} with ${PHP_CLI_SERVER_WORKERS:-4} workers..."
-php artisan serve --host=0.0.0.0 --port=${PORT} --no-reload
+# Use FrankenPHP (Caddy) for production - serves static assets directly without PHP overhead
+CADDYFILE="/app/Caddyfile"
+if [ ! -f "$CADDYFILE" ]; then
+    CADDYFILE="/Caddyfile"
+fi
+
+if command -v frankenphp &> /dev/null && [ -f "$CADDYFILE" ]; then
+    echo "==> Starting FrankenPHP with Caddy on port ${PORT}..."
+    frankenphp run --config "$CADDYFILE" --adapter caddyfile
+else
+    echo "==> FrankenPHP not found, falling back to artisan serve on port ${PORT}..."
+    php artisan serve --host=0.0.0.0 --port=${PORT} --no-reload
+fi
