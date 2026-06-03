@@ -1,9 +1,4 @@
 {
-    "$schema": "https://schema.railpack.io/railpack-plan.json",
-    "caches": {
-        "composer": "/app/vendor",
-        "npm": "/app/node_modules"
-    },
     "commands": {
         "build": [
             "npm run build",
