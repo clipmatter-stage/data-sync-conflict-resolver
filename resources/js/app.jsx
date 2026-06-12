@@ -13,6 +13,15 @@ import Swal from 'sweetalert2';
 // Make axios available globally for Inertia
 window.axios = axios;
 
+// Fallback: If the backend drops the X-Inertia header but returns a valid Inertia JSON payload,
+// we intercept the response and manually restore the header to prevent the Inertia modal error.
+window.axios.interceptors.response.use((response) => {
+    if (response.data && typeof response.data === 'object' && response.data.component && response.data.props) {
+        response.headers['x-inertia'] = 'true';
+    }
+    return response;
+});
+
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
