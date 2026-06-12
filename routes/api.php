@@ -17,6 +17,7 @@ Route::prefix('akeneo')->group(function () {
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
 Route::post('/exercise-2-tier-pricing', [ExerciseController::class, 'tierPricing']);
 Route::post('/exercise-3-cart-validator', [ExerciseController::class, 'cartValidator']);
 Route::post('/exercise-4-vendor-allocation', [ExerciseController::class, 'vendorAllocation']);
