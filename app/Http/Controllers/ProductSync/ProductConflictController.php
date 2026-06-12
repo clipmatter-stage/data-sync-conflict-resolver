@@ -55,6 +55,7 @@ class ProductConflictController extends Controller
         // Pagination
         $conflicts = $query->latest('detected_at')
             ->paginate(20)
+            ->withQueryString()
             ->through(function ($conflict) {
                 return [
                     'id' => $conflict->id,

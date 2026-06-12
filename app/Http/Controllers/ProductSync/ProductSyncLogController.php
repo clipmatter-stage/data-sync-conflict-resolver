@@ -43,6 +43,7 @@ class ProductSyncLogController extends Controller
         // Pagination
         $logs = $query->latest()
             ->paginate(50)
+            ->withQueryString()
             ->through(function ($log) {
                 return [
                     'id' => $log->id,

@@ -17,14 +17,14 @@ class EnsureInertiaHeader
     {
         $response = $next($request);
 
-        // If this is an Inertia request and the response is missing the X-Inertia header,
-        // but the content is clearly an Inertia JSON payload, forcefully restore the header.
-        if ($request->header('X-Inertia') && !$response->headers->has('X-Inertia')) {
+        // Forcefully ensure X-Inertia header is present for Inertia payloads
+        if ($request->header('X-Inertia')) {
             $content = $response->getContent();
             
             if (is_string($content) && str_starts_with($content, '{"component":')) {
                 $response->headers->set('X-Inertia', 'true');
                 $response->headers->set('Content-Type', 'application/json');
+                $response->headers->set('Access-Control-Expose-Headers', 'X-Inertia, X-Inertia-Location');
             }
         }
 
