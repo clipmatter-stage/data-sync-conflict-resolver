@@ -48,6 +48,7 @@ Route::middleware(['verify.shopify'])->prefix('product-sync')->name('product-syn
 
     // Sync
     Route::post('/sync', [\App\Http\Controllers\ProductSync\ProductSyncController::class, 'sync'])->name('sync');
+    Route::get('/status', [\App\Http\Controllers\ProductSync\ProductSyncController::class, 'status'])->name('status');
 
     // Conflicts
     Route::get('/conflicts', [\App\Http\Controllers\ProductSync\ProductConflictController::class, 'index'])->name('conflicts.index');

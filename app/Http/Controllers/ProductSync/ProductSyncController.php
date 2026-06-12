@@ -63,6 +63,43 @@ class ProductSyncController extends Controller
         }
     }
 
+    /**
+     * Check product sync status
+     */
+    public function status(Request $request): JsonResponse
+    {
+        $shop = Auth::user();
+        $shopId = $shop?->id;
+
+        $latestLog = \App\Models\ProductSyncLog::where('shop_id', $shopId)
+            ->whereIn('action', ['sync_started', 'sync_completed', 'sync_failed'])
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if (!$latestLog) {
+            return response()->json(['status' => 'idle']);
+        }
+
+        if ($latestLog->action === 'sync_started') {
+            return response()->json([
+                'status' => 'running',
+                'message' => $latestLog->message
+            ]);
+        }
+
+        if ($latestLog->action === 'sync_failed') {
+            return response()->json([
+                'status' => 'failed',
+                'message' => $latestLog->error_message ?? $latestLog->message
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'completed',
+            'message' => $latestLog->message
+        ]);
+    }
+
     private function respond(Request $request, array $payload, int $status = 200): JsonResponse|RedirectResponse
     {
         if ($request->header('X-Inertia')) {
