@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'shopify' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
     ],
 
     /*
