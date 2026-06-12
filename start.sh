@@ -43,6 +43,9 @@ echo "==> Creating storage directories..."
 mkdir -p storage/framework/{sessions,views,cache,testing} storage/logs bootstrap/cache
 chmod -R a+rw storage bootstrap/cache
 
+echo "==> Starting queue worker in background..."
+php artisan queue:work --tries=3 &
+
 # Use FrankenPHP (Caddy) for production - serves static assets directly without PHP overhead
 CADDYFILE="/app/Caddyfile"
 if [ ! -f "$CADDYFILE" ]; then
